@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Javascript todo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div class="row">
+   <div class="col-3"></div>
+    <div class="card col-6 mt-4">
+    	<h1 class="text-danger" id="h1">TODO'S</h1>
+    	<label for="items" >ADD ITEMS IN</label>
+    	<input type="text" id="items"><br>
+    	<button onclick="saveInput()" class="btn btn-primary">Add Item</button>
+    </div>
+    <div class="col-3"></div>
+</div>
+
+<div class="row ml-4">
+   <table id="userTable"  class="table-bordered"></table>
+</div> 
+
+
+ <div class="row">
+ 	<div class="col-3"></div>
+ 	<div class="col-3 mt-4"><button class="btn btn-danger"  onclick="deleteAll()">Delete All</button></div>
+<div class="col-3"></div>
+
+ </div>
+
+</body>
+
+</html>
+<script>
+	//variable declear arrayList k nam se
+var arrayList=[];
+	//function banaya 
+	function saveInput(){
+		//yahn ek var banaya or usmai value upar input text field ki id dalli jahn user input karega
+		var userInput= document.getElementById("items").value;
+		//jo bhi user textfield mai enter karega woh arrayList mai add hojayega (update)
+		arrayList.push(userInput);
+		//kahn list appear hogi woh localStorage hai wahn set kariangye
+		localStorage.setItem("lists", arrayList);
+		displayData();
+	}
+	function displayData(){
+		document.getElementById("userTable").innerHTML="";
+		var dataGetArray= localStorage.getItem("lists");
+		if(dataGetArray){
+		dataGetArray=dataGetArray.split(",");
+		arrayList=dataGetArray; 
+		document.getElementById("userTable").innerHTML +="<tr><th>Index</th><th>Name</th><th>Delete</th><th>Edit</th></tr>";
+	}
+ 		else dataGetArray=[];
+ 			console.log(dataGetArray);
+ 			for (var i=0; i < dataGetArray.length; i++) {
+ 			 document.getElementById("userTable").innerHTML += "<tr><td>"+i+"</td><td>"+dataGetArray[i]+"</td><td><button onclick=deleteItem("+i+") class='btn btn-primary'>Delete</button></td><td><button onclick=editItem("+i+") class='btn btn-success'>Edit</button></td></tr>";
+ 			}
+ 		}
+   function deleteItem(key){
+   	arrayList.splice(key,1);
+   	localStorage.setItem("lists", arrayList);
+   	displayData();
+  }
+  function editItem(key){
+  	var userInput= prompt("User Enter");
+  	arrayList.splice(key,1, userInput);
+  	localStorage.setItem("lists", arrayList);
+  	displayData();
+  }
+  function deleteAll(){
+  	localStorage.removeItem("lists");
+  	arrayList=[];
+  	displayData();
+  }	
+  displayData();
+  
+</script>
+
+
+
+
+
+
+
